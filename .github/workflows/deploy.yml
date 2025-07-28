@@ -49,3 +49,13 @@ jobs:
             cd /root/projects/deploy-vps-nextjs
             npm ci
             npm run build
+
+      - name: Executar o Start No Servidor
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /root/projects/deploy-vps-nextjs
+            npm run start --port 5566
