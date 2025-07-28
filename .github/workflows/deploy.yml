@@ -38,3 +38,13 @@ jobs:
 
             echo "Executando git pull"
             git pull origin main
+
+      - name: Executar o Build No Servidor
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            /root/projects/deploy-vps-nextjs
+            yarn build
