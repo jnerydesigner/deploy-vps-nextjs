@@ -1,0 +1,20 @@
+name: "Deploy NextJS VPS Hostinger"
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build_deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Copy files with SSH
+        uses: appleboy/scp-action@v1
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{secrets.SSH_PRIVATE_KEY}}
+          port: 5566
+          source: "."
+          target: "/projects"
