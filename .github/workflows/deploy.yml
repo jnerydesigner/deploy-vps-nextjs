@@ -16,6 +16,9 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            git clone https://github.com/jnerydesigner/deploy-vps-nextjs
+            mkdir -p /projects
+            if [ ! -d "/projects/deploy-vps-nextjs/.git" ]; then
+              git clone https://github.com/jnerydesigner/deploy-vps-nextjs /projects/deploy-vps-nextjs
+            fi
             cd /projects/deploy-vps-nextjs
             git pull origin main
