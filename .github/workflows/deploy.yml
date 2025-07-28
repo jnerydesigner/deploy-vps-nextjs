@@ -47,4 +47,4 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             /root/projects/deploy-vps-nextjs
-            yarn build
+            npm run build
