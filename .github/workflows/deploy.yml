@@ -17,8 +17,24 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             mkdir -p /projects
+            echo "PWD inicial:"
+            pwd
+            echo "Conteúdo de /projects:"
+            ls -la /projects
+
             if [ ! -d "/projects/deploy-vps-nextjs/.git" ]; then
-              git clone https://github.com/jnerydesigner/deploy-vps-nextjs /projects/deploy-vps-nextjs
+                echo "Clonando repositório..."
+                git clone https://github.com/jnerydesigner/deploy-vps-nextjs /projects/deploy-vps-nextjs
+            else
+                echo "Repositório já clonado"
             fi
+
+            echo "Entrando na pasta do projeto"
             cd /projects/deploy-vps-nextjs
+            echo "PWD após cd:"
+            pwd
+            echo "Conteúdo da pasta do projeto:"
+            ls -la
+
+            echo "Executando git pull"
             git pull origin main
