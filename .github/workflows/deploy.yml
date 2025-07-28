@@ -3,17 +3,18 @@ on:
   push:
     branches:
       - main
+
 jobs:
   build_deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
-      - name: Copy files with SSH
-        uses: appleboy/scp-action@v1
+      - name: Executar git pull no servidor
+        uses: appleboy/ssh-action@v0.1.7
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
-          key: ${{secrets.SSH_PRIVATE_KEY}}
-          source: "."
-          target: "/projects"
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /projects/deploy-vps-nextjs
+            git pull origin main
