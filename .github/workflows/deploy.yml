@@ -47,4 +47,5 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd /root/projects/deploy-vps-nextjs
+            npm ci
             npm run build
