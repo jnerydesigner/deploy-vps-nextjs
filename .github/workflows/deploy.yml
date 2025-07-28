@@ -58,4 +58,4 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd /root/projects/deploy-vps-nextjs
-            npm run start --port 5566
+            npm run start
