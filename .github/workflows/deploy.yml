@@ -15,6 +15,5 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{secrets.SSH_PRIVATE_KEY}}
-          port: 5566
           source: "."
           target: "/projects"
