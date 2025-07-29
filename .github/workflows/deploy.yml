@@ -9,37 +9,23 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Executar git pull no servidor
-        uses: appleboy/ssh-action@v0.1.7
+      # Clona o repositório no runner da GitHub Actions
+      - name: Checkout do código
+        uses: actions/checkout@v3
+
+      # Envia os arquivos via SCP para o VPS
+      - name: Copiar arquivos para o servidor
+        uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            mkdir -p /projects
-            echo "PWD inicial:"
-            pwd
-            echo "Conteúdo de /projects:"
-            ls -la /root/projects
+          source: "."
+          target: "/root/projects/deploy-vps-nextjs"
+          strip_components: 1
 
-            if [ ! -d "/root/projects/deploy-vps-nextjs/.git" ]; then
-                echo "Clonando repositório..."
-                git clone https://github.com/jnerydesigner/deploy-vps-nextjs /root/projects/deploy-vps-nextjs
-            else
-                echo "Repositório já clonado"
-            fi
-
-            echo "Entrando na pasta do projeto"
-            cd /root/projects/deploy-vps-nextjs
-            echo "PWD após cd:"
-            pwd
-            echo "Conteúdo da pasta do projeto:"
-            ls -la
-
-            echo "Executando git pull"
-            git pull origin main
-
-      - name: Instalar as dependencias
+      # Instala as dependências no servidor
+      - name: Instalar as dependências
         uses: appleboy/ssh-action@v0.1.7
         with:
           host: ${{ secrets.HOST }}
@@ -49,7 +35,8 @@ jobs:
             cd /root/projects/deploy-vps-nextjs
             yarn install
 
-      - name: Executar o Build No Servidor
+      # Faz o build no servidor
+      - name: Executar o build no servidor
         uses: appleboy/ssh-action@v0.1.7
         with:
           host: ${{ secrets.HOST }}
@@ -59,7 +46,8 @@ jobs:
             cd /root/projects/deploy-vps-nextjs
             yarn build
 
-      - name: Executar o PM2 e Start No Servidor
+      # Start/restart com PM2
+      - name: Executar PM2 no servidor
         uses: appleboy/ssh-action@v0.1.7
         with:
           host: ${{ secrets.HOST }}
